@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle2, Sparkles, Building2, ShieldCheck } from "lucide-react";
+import { CheckCircle2, Sparkles, Building2, ShieldCheck, ArrowRight } from "lucide-react";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { FAQ } from "@/components/FAQ";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -186,19 +186,54 @@ export default function FreeListingPage() {
       </section>
 
       <section className="container-main pb-16">
-        <div className="bg-gradient-to-br from-brand to-brand-hover rounded-2xl p-8 md:p-12 text-white text-center">
-          <h2 className="text-2xl md:text-3xl font-bold">
-            まずは無料で掲載申請
-          </h2>
-          <p className="mt-3 text-white/90 text-sm md:text-base">
-            申請後の有料サービスは強制されません。ご希望の方にのみご案内します。
-          </p>
-          <Link
-            href="/free-listing/apply"
-            className="mt-6 inline-flex items-center justify-center px-7 py-3.5 rounded-xl bg-white text-brand font-bold hover:bg-white/90"
-          >
-            無料掲載申請フォームへ
-          </Link>
+        <div className="relative overflow-hidden bg-gradient-to-br from-brand to-brand-hover rounded-3xl p-8 md:p-14 text-white text-center shadow-2xl">
+          {/* 装飾用の背景円 */}
+          <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 pointer-events-none" />
+          <div className="absolute -bottom-24 -left-16 w-72 h-72 rounded-full bg-white/5 pointer-events-none" />
+
+          <div className="relative">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-xs font-semibold mb-4">
+              <ShieldCheck size={12} />
+              掲載費・初期費用 完全0円
+            </div>
+            <h2 className="text-2xl md:text-4xl font-bold leading-tight">
+              まずは無料で<br className="md:hidden" />掲載申請
+            </h2>
+            <p className="mt-3 text-white/90 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+              申請後の有料サービスは強制されません。
+              <br className="hidden sm:block" />
+              ご希望の方にのみご案内します。お気軽にお試しください。
+            </p>
+
+            {/* 3つの安心ポイント */}
+            <div className="mt-7 grid grid-cols-3 gap-3 max-w-2xl mx-auto">
+              <div className="bg-white/15 rounded-xl px-3 py-3 backdrop-blur">
+                <div className="text-2xl md:text-3xl font-bold">5分</div>
+                <div className="text-[10px] md:text-xs text-white/85 mt-0.5">入力時間</div>
+              </div>
+              <div className="bg-white/15 rounded-xl px-3 py-3 backdrop-blur">
+                <div className="text-2xl md:text-3xl font-bold">3日</div>
+                <div className="text-[10px] md:text-xs text-white/85 mt-0.5">最短公開</div>
+              </div>
+              <div className="bg-white/15 rounded-xl px-3 py-3 backdrop-blur">
+                <div className="text-2xl md:text-3xl font-bold">0円</div>
+                <div className="text-[10px] md:text-xs text-white/85 mt-0.5">完全無料</div>
+              </div>
+            </div>
+
+            <Link
+              href="/free-listing/apply"
+              style={{ color: "#ff6b35" }}
+              className="mt-8 inline-flex items-center justify-center gap-2 px-8 md:px-10 py-4 md:py-4 rounded-2xl bg-white font-bold text-base md:text-lg shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all"
+            >
+              無料掲載申請フォームへ
+              <ArrowRight size={20} />
+            </Link>
+
+            <p className="mt-4 text-xs text-white/75">
+              ※ 後から請求は一切ありません / 解約はメール1通でOK
+            </p>
+          </div>
         </div>
       </section>
 
