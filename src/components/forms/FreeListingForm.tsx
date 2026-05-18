@@ -13,6 +13,7 @@ import {
   getSubCategories,
 } from "@/data/categories";
 import { cn } from "@/lib/utils";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const interestedServiceOptions = [
   { value: "hp", label: "HP制作" },
@@ -31,6 +32,7 @@ export function FreeListingForm() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FreeListingInput>({
     resolver: zodResolver(freeListingSchema),
@@ -160,12 +162,14 @@ export function FreeListingForm() {
             className="input"
           />
         </Field>
-        <Field label="写真URL（画像アップロードは後日対応）">
-          <input
-            {...register("imageUrl")}
-            placeholder="https://example.com/photo.jpg"
-            className="input"
+        <Field label="お店の写真（ドラッグ&ドロップ or クリックで選択）">
+          <ImageUpload
+            name="imageUrl"
+            onChange={(url) => setValue("imageUrl", url, { shouldValidate: true })}
           />
+          <p className="mt-1 text-[11px] text-muted-soft">
+            ※ JPG / PNG / WebP・最大5MB。あとから差し替えも可能です。
+          </p>
         </Field>
         <Field label="営業時間">
           <input
