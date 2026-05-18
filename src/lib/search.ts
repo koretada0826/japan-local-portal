@@ -55,6 +55,8 @@ export function searchBusinesses(filters: SearchFilters): Business[] {
     );
   } else {
     results = results.sort((a, b) => {
+      // プレミアム掲載（有料広告枠）を最優先で上位表示
+      if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
       if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
       return a.displayOrder - b.displayOrder;
     });

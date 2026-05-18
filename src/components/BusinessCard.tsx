@@ -25,6 +25,11 @@ export function BusinessCard({ business }: { business: Business }) {
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover"
         />
+        {business.isPremium && (
+          <span className="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-accent text-white shadow">
+            PR
+          </span>
+        )}
       </div>
       <div className="p-4 md:p-5">
         <div className="flex items-center gap-2 text-xs text-muted">

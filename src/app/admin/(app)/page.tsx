@@ -1,12 +1,16 @@
 import Link from "next/link";
 import { readLeads } from "@/lib/leadStore";
+import { readAds } from "@/lib/adStore";
 import { businesses } from "@/data/businesses";
 
 export default async function AdminDashboardPage() {
   const leads = await readLeads();
+  const ads = await readAds();
   const total = businesses.length;
   const published = businesses.filter((b) => b.status === "published").length;
   const featured = businesses.filter((b) => b.isFeatured).length;
+  const premiumBiz = businesses.filter((b) => b.isPremium).length;
+  const activeAds = ads.filter((a) => a.isActive).length;
 
   const untouched = leads.filter((l) => l.salesStatus === "untouched").length;
   const won = leads.filter((l) => l.salesStatus === "won").length;
@@ -27,6 +31,8 @@ export default async function AdminDashboardPage() {
     { label: "総掲載店舗数", value: total },
     { label: "公開中", value: published },
     { label: "おすすめ表示", value: featured },
+    { label: "プレミアム掲載", value: premiumBiz, accent: true },
+    { label: "配信中の広告", value: activeAds, accent: true },
     { label: "総リード数", value: leads.length },
     { label: "未対応リード", value: untouched, accent: true },
     { label: "受注件数", value: won },
@@ -110,6 +116,12 @@ export default async function AdminDashboardPage() {
               className="px-3 py-2 rounded-xl border border-border hover:border-brand hover:text-brand"
             >
               リード管理
+            </Link>
+            <Link
+              href="/admin/ads"
+              className="px-3 py-2 rounded-xl border border-border hover:border-brand hover:text-brand"
+            >
+              広告管理
             </Link>
             <Link
               href="/admin/leads?export=csv"

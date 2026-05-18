@@ -12,6 +12,7 @@ const adminNav = [
   { href: "/admin", label: "ダッシュボード" },
   { href: "/admin/businesses", label: "店舗管理" },
   { href: "/admin/leads", label: "リード管理" },
+  { href: "/admin/ads", label: "広告管理" },
   { href: "/admin/categories", label: "カテゴリ管理" },
   { href: "/admin/regions", label: "地域管理" },
 ];

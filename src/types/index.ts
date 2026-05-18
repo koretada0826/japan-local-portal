@@ -109,6 +109,25 @@ export type Lead = {
   createdAt: string;
 };
 
+export type AdPlacement = "sidebar_left" | "sidebar_right";
+
+export type AdType = "banner" | "premium_business";
+
+export type Ad = {
+  id: string;
+  title: string;
+  imageUrl: string;
+  linkUrl: string;
+  placement: AdPlacement;
+  adType: AdType;
+  sponsorName?: string;
+  priority: number;
+  isActive: boolean;
+  startAt?: string;
+  endAt?: string;
+  createdAt: string;
+};
+
 export type Article = {
   id: string;
   title: string;

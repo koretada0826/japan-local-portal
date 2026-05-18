@@ -3,6 +3,7 @@ import "./globals.css";
 import { SITE_CONFIG } from "@/lib/config";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { AdShell } from "@/components/AdShell";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
@@ -36,7 +37,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className="min-h-screen flex flex-col bg-background text-foreground">
         <Header />
-        <main className="flex-1">{children}</main>
+        <AdShell>{children}</AdShell>
         <Footer />
       </body>
     </html>

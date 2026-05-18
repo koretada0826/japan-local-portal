@@ -1,0 +1,108 @@
+import type { Ad } from "@/types";
+
+const sq = (seed: string) => `https://picsum.photos/seed/${seed}/600/600`;
+
+/**
+ * MVPデモ用サンプル広告（アフィリエイト風）
+ * 実運用ではここを管理画面から登録した広告に置き換える
+ */
+export const sampleAds: Ad[] = [
+  // ── 左サイド広告（縦一列）──
+  {
+    id: "ad-rail-l-001",
+    title: "【公式】月額9,800円〜のHP制作｜30日全額返金保証",
+    imageUrl: sq("affil-hp-cta"),
+    linkUrl: "https://example.com/lp/hp",
+    placement: "sidebar_left",
+    adType: "banner",
+    sponsorName: "WEB制作.JP",
+    priority: 100,
+    isActive: true,
+    createdAt: "2026-05-18T09:00:00Z",
+  },
+  {
+    id: "ad-rail-l-002",
+    title: "MEO上位表示 完全成果報酬｜来店数 月+38%",
+    imageUrl: sq("affil-meo-result"),
+    linkUrl: "https://example.com/lp/meo",
+    placement: "sidebar_left",
+    adType: "banner",
+    sponsorName: "MEOラボ Pro",
+    priority: 90,
+    isActive: true,
+    createdAt: "2026-05-18T09:05:00Z",
+  },
+  {
+    id: "ad-rail-l-003",
+    title: "未経験OKの転職｜年収500万〜・面談無料",
+    imageUrl: sq("affil-career-jp"),
+    linkUrl: "https://example.com/lp/career",
+    placement: "sidebar_left",
+    adType: "banner",
+    sponsorName: "キャリアブースト",
+    priority: 80,
+    isActive: true,
+    createdAt: "2026-05-18T09:10:00Z",
+  },
+  {
+    id: "ad-rail-l-004",
+    title: "オンライン英会話 体験無料｜初月980円",
+    imageUrl: sq("affil-eikaiwa-girl"),
+    linkUrl: "https://example.com/lp/english",
+    placement: "sidebar_left",
+    adType: "banner",
+    sponsorName: "ネイティブトーク",
+    priority: 70,
+    isActive: true,
+    createdAt: "2026-05-18T09:15:00Z",
+  },
+  // ── 右サイド広告（縦一列）──
+  {
+    id: "ad-rail-r-001",
+    title: "プログラミングスクール｜全額返金・転職保証",
+    imageUrl: sq("affil-tech-camp"),
+    linkUrl: "https://example.com/lp/tech",
+    placement: "sidebar_right",
+    adType: "banner",
+    sponsorName: "TechCamp Pro",
+    priority: 100,
+    isActive: true,
+    createdAt: "2026-05-18T09:20:00Z",
+  },
+  {
+    id: "ad-rail-r-002",
+    title: "賃貸物件サイト｜最大3ヶ月家賃0円キャンペーン",
+    imageUrl: sq("affil-chintai-room"),
+    linkUrl: "https://example.com/lp/rent",
+    placement: "sidebar_right",
+    adType: "banner",
+    sponsorName: "おうちナビ",
+    priority: 90,
+    isActive: true,
+    createdAt: "2026-05-18T09:25:00Z",
+  },
+  {
+    id: "ad-rail-r-003",
+    title: "クレカ比較｜還元率1.5%・年会費永年無料",
+    imageUrl: sq("affil-credit-card"),
+    linkUrl: "https://example.com/lp/card",
+    placement: "sidebar_right",
+    adType: "banner",
+    sponsorName: "カード比較.com",
+    priority: 80,
+    isActive: true,
+    createdAt: "2026-05-18T09:30:00Z",
+  },
+  {
+    id: "ad-rail-r-004",
+    title: "電気代見直し｜年間最大3万円ダウン・無料診断",
+    imageUrl: sq("affil-denki-saving"),
+    linkUrl: "https://example.com/lp/power",
+    placement: "sidebar_right",
+    adType: "banner",
+    sponsorName: "電気くらべ",
+    priority: 70,
+    isActive: true,
+    createdAt: "2026-05-18T09:35:00Z",
+  },
+];
