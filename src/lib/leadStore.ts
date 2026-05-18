@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 import type { Lead } from "@/types";
 import { sampleLeads } from "@/data/sampleLeads";
 import { supabaseAdmin, isSupabaseAvailable } from "./supabaseServer";
+import { notifyLeadReceived } from "./email";
 
 const STORE_FILE = path.join(process.cwd(), ".data", "leads.json");
 
@@ -142,7 +143,12 @@ export async function appendLead(
       console.warn("[leadStore] supabase insert failed, lead NOT persisted:", error.message);
       return lead;
     }
-    return rowToLead(inserted as LeadRow);
+    const created = rowToLead(inserted as LeadRow);
+    // メール通知（失敗してもリード保存自体は成功扱い）
+    notifyLeadReceived(created).catch((e) =>
+      console.warn("[leadStore] notify failed:", e)
+    );
+    return created;
   }
 
   // ファイルフォールバック
@@ -161,6 +167,10 @@ export async function appendLead(
   } catch (err) {
     console.warn("[leadStore] write failed:", err);
   }
+  // ファイル保存時もメール通知（Supabaseなしでも通知だけは出す）
+  notifyLeadReceived(lead).catch((e) =>
+    console.warn("[leadStore] notify failed:", e)
+  );
   return lead;
 }
 
