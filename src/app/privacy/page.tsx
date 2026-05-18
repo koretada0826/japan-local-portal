@@ -50,7 +50,9 @@ export default function PrivacyPage() {
         <section>
           <h2 className="font-bold text-base">5. お問い合わせ窓口</h2>
           <p className="mt-2 text-muted">
-            運営：{SITE_CONFIG.name}
+            運営会社：{SITE_CONFIG.company}
+            <br />
+            サービス名：{SITE_CONFIG.name}
             <br />
             連絡先：{SITE_CONFIG.email}
           </p>

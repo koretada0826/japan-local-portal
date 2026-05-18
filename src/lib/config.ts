@@ -8,4 +8,6 @@ export const SITE_CONFIG = {
   ogImage: "/og.png",
   email: "info@machi-select.example.com",
   twitter: "@machi_select",
+  company: "GIGUUU株式会社",
+  companyEn: "GIGUUU Inc.",
 } as const;

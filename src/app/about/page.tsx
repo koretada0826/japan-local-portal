@@ -17,14 +17,14 @@ export default function AboutPage() {
         <dl className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-y-3">
           <dt className="text-muted">サイト名</dt>
           <dd className="font-semibold">{SITE_CONFIG.name}</dd>
+          <dt className="text-muted">運営会社</dt>
+          <dd className="font-semibold">{SITE_CONFIG.company}</dd>
           <dt className="text-muted">サービス内容</dt>
           <dd>
             全国のお店・会社・施設を、地域とジャンルから探せる総合ポータルサイト
           </dd>
           <dt className="text-muted">連絡先</dt>
           <dd>{SITE_CONFIG.email}</dd>
-          <dt className="text-muted">運営</dt>
-          <dd>{SITE_CONFIG.name} 編集部</dd>
         </dl>
       </div>
     </div>
