@@ -3,9 +3,83 @@ import path from "path";
 import { randomUUID } from "crypto";
 import type { Lead } from "@/types";
 import { sampleLeads } from "@/data/sampleLeads";
+import { supabaseAdmin, isSupabaseAvailable } from "./supabaseServer";
 
 const STORE_FILE = path.join(process.cwd(), ".data", "leads.json");
 
+// ─── Supabase行 ⇄ Lead型 変換ヘルパー ───
+type LeadRow = {
+  id: string;
+  business_id: string | null;
+  lead_type: Lead["leadType"];
+  company_name: string;
+  contact_name: string | null;
+  contact_role: string | null;
+  decision_maker_name: string | null;
+  decision_maker_role: string | null;
+  email: string | null;
+  phone: string | null;
+  needs: string | null;
+  has_website: boolean | null;
+  has_google_business_profile: boolean | null;
+  uses_sns: boolean | null;
+  has_recruiting_issue: boolean | null;
+  interested_services: string[];
+  sales_status: Lead["salesStatus"];
+  memo: string | null;
+  next_action_date: string | null;
+  created_at: string;
+};
+
+function rowToLead(r: LeadRow): Lead {
+  return {
+    id: r.id,
+    businessId: r.business_id ?? undefined,
+    leadType: r.lead_type,
+    companyName: r.company_name,
+    contactName: r.contact_name ?? "",
+    contactRole: r.contact_role ?? undefined,
+    decisionMakerName: r.decision_maker_name ?? undefined,
+    decisionMakerRole: r.decision_maker_role ?? undefined,
+    email: r.email ?? "",
+    phone: r.phone ?? "",
+    needs: r.needs ?? undefined,
+    hasWebsite: r.has_website ?? undefined,
+    hasGoogleBusinessProfile: r.has_google_business_profile ?? undefined,
+    usesSns: r.uses_sns ?? undefined,
+    hasRecruitingIssue: r.has_recruiting_issue ?? undefined,
+    interestedServices: (r.interested_services ?? []) as Lead["interestedServices"],
+    salesStatus: r.sales_status,
+    memo: r.memo ?? undefined,
+    nextActionDate: r.next_action_date ?? undefined,
+    createdAt: r.created_at,
+  };
+}
+
+function leadToRow(l: Partial<Lead>): Partial<LeadRow> {
+  return {
+    ...(l.businessId !== undefined && { business_id: l.businessId || null }),
+    ...(l.leadType !== undefined && { lead_type: l.leadType }),
+    ...(l.companyName !== undefined && { company_name: l.companyName }),
+    ...(l.contactName !== undefined && { contact_name: l.contactName }),
+    ...(l.contactRole !== undefined && { contact_role: l.contactRole }),
+    ...(l.decisionMakerName !== undefined && { decision_maker_name: l.decisionMakerName }),
+    ...(l.decisionMakerRole !== undefined && { decision_maker_role: l.decisionMakerRole }),
+    ...(l.email !== undefined && { email: l.email }),
+    ...(l.phone !== undefined && { phone: l.phone }),
+    ...(l.needs !== undefined && { needs: l.needs }),
+    ...(l.hasWebsite !== undefined && { has_website: l.hasWebsite }),
+    ...(l.hasGoogleBusinessProfile !== undefined && { has_google_business_profile: l.hasGoogleBusinessProfile }),
+    ...(l.usesSns !== undefined && { uses_sns: l.usesSns }),
+    ...(l.hasRecruitingIssue !== undefined && { has_recruiting_issue: l.hasRecruitingIssue }),
+    ...(l.interestedServices !== undefined && { interested_services: l.interestedServices }),
+    ...(l.salesStatus !== undefined && { sales_status: l.salesStatus }),
+    ...(l.memo !== undefined && { memo: l.memo }),
+    ...(l.nextActionDate !== undefined && { next_action_date: l.nextActionDate }),
+  };
+}
+
+// ─── ローカルJSONストア（fallback） ───
 async function ensureStore() {
   const dir = path.dirname(STORE_FILE);
   await fs.mkdir(dir, { recursive: true });
@@ -16,34 +90,35 @@ async function ensureStore() {
   }
 }
 
-/**
- * ローカル(.data/leads.json)からリード一覧を読む。
- * Vercel等の読み取り専用FSでは読み込みに失敗するため、
- * フォールバックでサンプルリードを返す（管理画面のUIを見せるため）。
- */
-export async function readLeads(): Promise<Lead[]> {
+async function readLeadsFromFile(): Promise<Lead[]> {
   try {
     await ensureStore();
     const raw = await fs.readFile(STORE_FILE, "utf-8");
     const parsed = JSON.parse(raw) as Lead[];
-    if (parsed.length === 0) {
-      // ローカル初回起動でファイルは空 → 開発用にサンプルを混ぜる
-      return sampleLeads;
-    }
+    if (parsed.length === 0) return sampleLeads;
     return parsed;
   } catch (err) {
-    console.warn(
-      "[leadStore] read failed (likely read-only fs). Falling back to samples:",
-      err instanceof Error ? err.message : err
-    );
+    console.warn("[leadStore] file read failed, fallback to samples:", err);
     return sampleLeads;
   }
 }
 
-/**
- * リード追加。Vercel等の読み取り専用FSでは書き込みに失敗する。
- * その場合は警告ログを出して保存スキップ（API側でエラーは返さない）。
- */
+// ─── Public API ───
+export async function readLeads(): Promise<Lead[]> {
+  if (isSupabaseAvailable && supabaseAdmin) {
+    const { data, error } = await supabaseAdmin
+      .from("leads")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.warn("[leadStore] supabase read failed, fallback to file:", error.message);
+      return readLeadsFromFile();
+    }
+    return (data as LeadRow[]).map(rowToLead);
+  }
+  return readLeadsFromFile();
+}
+
 export async function appendLead(
   data: Omit<Lead, "id" | "createdAt" | "salesStatus"> & {
     salesStatus?: Lead["salesStatus"];
@@ -56,6 +131,21 @@ export async function appendLead(
     ...data,
   };
 
+  if (isSupabaseAvailable && supabaseAdmin) {
+    const row = leadToRow(lead);
+    const { data: inserted, error } = await supabaseAdmin
+      .from("leads")
+      .insert(row)
+      .select()
+      .single();
+    if (error) {
+      console.warn("[leadStore] supabase insert failed, lead NOT persisted:", error.message);
+      return lead;
+    }
+    return rowToLead(inserted as LeadRow);
+  }
+
+  // ファイルフォールバック
   try {
     await ensureStore();
     const raw = await fs.readFile(STORE_FILE, "utf-8");
@@ -69,14 +159,8 @@ export async function appendLead(
     leads.unshift(lead);
     await fs.writeFile(STORE_FILE, JSON.stringify(leads, null, 2), "utf-8");
   } catch (err) {
-    // 本番Vercel等の読み取り専用環境。Supabase接続前提なのでログのみ。
-    console.warn(
-      "[leadStore] write failed (likely read-only fs). Lead NOT persisted:",
-      err instanceof Error ? err.message : err,
-      JSON.stringify(lead)
-    );
+    console.warn("[leadStore] write failed:", err);
   }
-
   return lead;
 }
 
@@ -84,18 +168,31 @@ export async function updateLead(
   id: string,
   patch: Partial<Lead>
 ): Promise<Lead | null> {
+  if (isSupabaseAvailable && supabaseAdmin) {
+    const row = leadToRow(patch);
+    const { data, error } = await supabaseAdmin
+      .from("leads")
+      .update(row)
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) {
+      console.warn("[leadStore] supabase update failed:", error.message);
+      return null;
+    }
+    return data ? rowToLead(data as LeadRow) : null;
+  }
+
+  // ファイルフォールバック
   try {
-    const leads = await readLeads();
+    const leads = await readLeadsFromFile();
     const idx = leads.findIndex((l) => l.id === id);
     if (idx < 0) return null;
     leads[idx] = { ...leads[idx], ...patch };
     await fs.writeFile(STORE_FILE, JSON.stringify(leads, null, 2), "utf-8");
     return leads[idx];
   } catch (err) {
-    console.warn(
-      "[leadStore] update failed:",
-      err instanceof Error ? err.message : err
-    );
+    console.warn("[leadStore] update failed:", err);
     return null;
   }
 }

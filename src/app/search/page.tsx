@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Search, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { BusinessCard } from "@/components/BusinessCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { FreeListingBanner } from "@/components/OwnerCTA";
+import { SearchFiltersForm } from "@/components/SearchFiltersForm";
 import { searchBusinesses } from "@/lib/search";
 import {
   findRegion,
@@ -12,8 +13,8 @@ import {
   getRegionGroups,
 } from "@/data/regions";
 import {
+  categories,
   getMainCategories,
-  getSubCategories,
   findCategory,
   findCategoryByParent,
 } from "@/data/categories";
@@ -61,7 +62,12 @@ export default async function SearchPage(props: {
   const subCat = main && sub ? findCategoryByParent(sub, main) : null;
   const regionGroups = getRegionGroups();
   const mainCategories = getMainCategories();
-  const subCategories = main ? getSubCategories(main) : [];
+  const subCategories = categories.filter((c) => c.level === "sub");
+  const prefectures = regionGroups.map((rg) => ({
+    regionName: rg.name,
+    regionSlug: rg.slug,
+    items: getPrefecturesByRegion(rg.slug),
+  }));
 
   return (
     <div className="container-main py-8 md:py-12">
@@ -78,120 +84,17 @@ export default async function SearchPage(props: {
         </p>
       </div>
 
-      {/* 検索フォーム（GETでサーバー絞り込み） */}
-      <form
-        action="/search"
-        method="get"
-        className="mt-6 bg-white border border-border rounded-2xl p-4 md:p-5 shadow-sm"
-      >
-        <div className="grid gap-3 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <label className="block text-xs font-semibold text-muted mb-1">
-              キーワード
-            </label>
-            <div className="relative">
-              <Search
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-soft"
-              />
-              <input
-                type="text"
-                name="q"
-                defaultValue={q}
-                placeholder="例：池袋 カフェ / 渋谷 美容室"
-                className="w-full pl-9 pr-4 py-3 rounded-xl border border-border text-sm focus:outline-none focus:ring-2 focus:ring-brand/40"
-              />
-            </div>
-          </div>
-
-          <div className="md:col-span-3">
-            <label className="block text-xs font-semibold text-muted mb-1">
-              都道府県
-            </label>
-            <select
-              name="pref"
-              defaultValue={pref}
-              className="w-full px-3 py-3 rounded-xl border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand/40"
-            >
-              <option value="">全国</option>
-              {regionGroups.map((rg) => {
-                const prefs = getPrefecturesByRegion(rg.slug);
-                if (prefs.length === 0) return null;
-                return (
-                  <optgroup key={rg.slug} label={rg.name}>
-                    {prefs.map((p) => (
-                      <option key={p.slug} value={p.slug}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </optgroup>
-                );
-              })}
-            </select>
-          </div>
-
-          <div className="md:col-span-2">
-            <label className="block text-xs font-semibold text-muted mb-1">
-              大カテゴリ
-            </label>
-            <select
-              name="main"
-              defaultValue={main}
-              className="w-full px-3 py-3 rounded-xl border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand/40"
-            >
-              <option value="">すべて</option>
-              {mainCategories.map((m) => (
-                <option key={m.slug} value={m.slug}>
-                  {m.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="md:col-span-2">
-            <label className="block text-xs font-semibold text-muted mb-1">
-              中カテゴリ
-            </label>
-            <select
-              name="sub"
-              defaultValue={sub}
-              disabled={!main}
-              className="w-full px-3 py-3 rounded-xl border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand/40 disabled:bg-surface-soft disabled:text-muted-soft"
-            >
-              <option value="">すべて</option>
-              {subCategories.map((s) => (
-                <option key={s.slug} value={s.slug}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-          <div className="text-xs text-muted-soft">
-            中カテゴリは大カテゴリを選ぶと有効になります
-          </div>
-          <div className="flex gap-2">
-            {hasAnyFilter && (
-              <Link
-                href="/search"
-                className="inline-flex items-center gap-1 px-4 py-2 rounded-xl border border-border bg-white text-sm hover:border-brand text-muted"
-              >
-                <X size={14} />
-                条件クリア
-              </Link>
-            )}
-            <button
-              type="submit"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand text-white font-semibold text-sm hover:bg-brand-hover"
-            >
-              <Search size={14} />
-              この条件で検索
-            </button>
-          </div>
-        </div>
-      </form>
+      {/* 検索フォーム（大→中カテゴリ連動・Client Component） */}
+      <SearchFiltersForm
+        prefectures={prefectures}
+        mainCategories={mainCategories}
+        subCategories={subCategories}
+        initialQ={q}
+        initialPref={pref}
+        initialMain={main}
+        initialSub={sub}
+        hasAnyFilter={hasAnyFilter}
+      />
 
       {/* 現在の絞り込み表示 */}
       {hasAnyFilter && (

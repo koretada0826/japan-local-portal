@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>まちセレクト 提案資料</title>
+<style>
+  :root {
+    --brand: #ff6b35;
+    --brand-deep: #d94c1a;
+    --brand-hover: #ea580c;
+    --brand-soft: #fff4ee;
+    --brand-tint: #ffe5d5;
+    --brand-peach: #fdba74;
+    --fg: #1f2937;
+    --fg-soft: #374151;
+    --muted: #6b7280;
+    --muted-soft: #9ca3af;
+    --border: #e8e6e1;
+    --border-soft: #f0eeea;
+    --bg-soft: #faf9f6;
+    --paper: #ffffff;
+    --page-bg: #f5f3ef;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.85;
+    color: var(--fg);
+    background:
+      radial-gradient(circle at 10% 0%, rgba(255,107,53,.04) 0%, transparent 40%),
+      radial-gradient(circle at 90% 100%, rgba(253,186,116,.05) 0%, transparent 40%),
+      var(--page-bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "palt";
+  }
+  /* 紙のプロポーザル感を出す中央カード */
+  .doc {
+    max-width: 920px;
+    margin: 3em auto 4em;
+    background: var(--paper);
+    padding: 4em 4em 5em;
+    border-radius: 8px;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,.04),
+      0 8px 24px rgba(0,0,0,.06),
+      0 20px 60px rgba(0,0,0,.04);
+    position: relative;
+    overflow: hidden;
+  }
+  /* 上部ブランドストライプ */
+  .doc::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background:
+      linear-gradient(90deg, var(--brand) 0%, var(--brand-peach) 50%, var(--brand) 100%);
+  }
+  /* 右下のブランドウォーターマーク（控えめ） */
+  .doc::after {
+    content: "MACHI SELECT";
+    position: absolute;
+    right: 1.6em;
+    bottom: 1.2em;
+    font-size: .7em;
+    letter-spacing: .4em;
+    color: var(--muted-soft);
+    opacity: .35;
+    font-weight: 700;
+    pointer-events: none;
+  }
+
+  /* ─────  タイポグラフィ  ───── */
+  h1 {
+    font-size: 2.3em;
+    font-weight: 800;
+    color: var(--fg);
+    margin: 0 0 1.2em;
+    padding: 0;
+    border: none;
+    line-height: 1.3;
+    letter-spacing: -.01em;
+    position: relative;
+  }
+  h1::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 4px;
+    background: var(--brand);
+    margin-top: .6em;
+    border-radius: 2px;
+  }
+  h2 {
+    font-size: 1.6em;
+    font-weight: 800;
+    margin: 3em 0 1em;
+    padding: 0 0 0 .8em;
+    border: none;
+    border-left: 5px solid var(--brand);
+    line-height: 1.4;
+    letter-spacing: -.005em;
+    color: var(--fg);
+  }
+  h3 {
+    font-size: 1.18em;
+    font-weight: 700;
+    margin: 2em 0 .6em;
+    padding: 0 0 0 .7em;
+    color: var(--brand-deep);
+    border-left: 3px solid var(--brand-peach);
+    line-height: 1.45;
+  }
+  h4 {
+    font-size: 1.02em;
+    font-weight: 700;
+    margin: 1.6em 0 .5em;
+    color: var(--fg);
+  }
+  p { margin: .9em 0; font-size: .98em; }
+  ul, ol { padding-left: 1.5em; margin: .9em 0; }
+  li { margin: .4em 0; }
+  li::marker { color: var(--brand); }
+  ol li::marker { font-weight: 700; }
+  strong {
+    color: var(--brand-deep);
+    font-weight: 700;
+  }
+  a {
+    color: var(--brand);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,107,53,.3);
+    transition: border-color .2s;
+  }
+  a:hover { border-color: var(--brand); }
+
+  /* ─────  テーブル  ───── */
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1.5em 0;
+    width: 100%;
+    font-size: .94em;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,.03);
+  }
+  thead { background: linear-gradient(180deg, var(--brand-deep), var(--brand)); }
+  th {
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .03em;
+    padding: .85em 1em;
+    text-align: left;
+    border: none;
+    font-size: .92em;
+  }
+  td {
+    padding: .8em 1em;
+    border: none;
+    border-top: 1px solid var(--border-soft);
+    vertical-align: top;
+  }
+  tbody tr:first-child td { border-top: none; }
+  tbody tr:nth-child(even) { background: rgba(255,107,53,.025); }
+  tbody tr:hover { background: var(--brand-soft); }
+
+  /* ─────  引用（プルクオート） ───── */
+  blockquote {
+    border: none;
+    background:
+      linear-gradient(135deg, var(--brand-soft) 0%, #fff 100%);
+    margin: 2em 0;
+    padding: 1.4em 1.8em 1.4em 3.4em;
+    color: var(--fg);
+    border-radius: 12px;
+    border-left: 4px solid var(--brand);
+    position: relative;
+    font-size: 1.02em;
+    font-weight: 500;
+    box-shadow: 0 2px 12px rgba(255,107,53,.05);
+  }
+  blockquote::before {
+    content: "“";
+    position: absolute;
+    left: .5em;
+    top: -.05em;
+    font-size: 3.8em;
+    color: var(--brand);
+    font-family: Georgia, serif;
+    line-height: 1;
+    font-weight: 700;
+    opacity: .55;
+  }
+  blockquote p { margin: .3em 0; }
+
+  /* ─────  装飾HR  ───── */
+  hr {
+    margin: 3em 0;
+    border: none;
+    height: 24px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  hr::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 1px;
+    background: var(--border);
+  }
+  hr::after {
+    content: "◆";
+    position: relative;
+    background: var(--paper);
+    padding: 0 1em;
+    color: var(--brand);
+    font-size: .7em;
+    opacity: .6;
+  }
+
+  /* ─────  Code  ───── */
+  code {
+    background: var(--bg-soft);
+    padding: .15em .4em;
+    border-radius: 4px;
+    font-family: Menlo, Monaco, monospace;
+    font-size: .9em;
+    color: var(--brand-deep);
+  }
+  pre {
+    background: var(--bg-soft);
+    padding: 1em 1.2em;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: .85em;
+    line-height: 1.6;
+    border-left: 3px solid var(--brand);
+  }
+  pre code { background: transparent; padding: 0; color: var(--fg); }
+  .print-note {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: var(--brand);
+    color: #fff;
+    padding: .5em 1em;
+    border-radius: 999px;
+    font-size: .85em;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    cursor: pointer;
+    user-select: none;
+    border: none;
+  }
+  .print-note:hover { background: #ea580c; }
+  /* ─────────  デザインコンポーネント  ───────── */
+
+  /* ヒーロー（表紙・コンセプト枠） */
+  .hero {
+    text-align: center;
+    padding: 3em 2em;
+    background: linear-gradient(135deg, var(--brand-soft) 0%, #fff 70%, #fff 100%);
+    border-radius: 20px;
+    margin: 2em 0 3em;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 32px rgba(0,0,0,.04);
+  }
+  .hero .hero-eyebrow {
+    display: inline-block;
+    color: var(--brand);
+    font-size: .85em;
+    font-weight: 700;
+    letter-spacing: .2em;
+    padding: .3em 1em;
+    background: #fff;
+    border-radius: 999px;
+    margin-bottom: 1em;
+  }
+  .hero .hero-title {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin: .3em 0;
+    color: var(--fg);
+    line-height: 1.3;
+  }
+  .hero .hero-sub {
+    color: var(--muted);
+    font-size: 1.05em;
+    margin-top: .5em;
+  }
+  .hero .hero-tag {
+    display: inline-block;
+    font-size: .85em;
+    color: var(--muted);
+    margin-top: 1.5em;
+    padding-top: 1em;
+    border-top: 1px solid var(--border);
+    width: 60%;
+  }
+
+  /* ステップカード（横並び・矢印付き / 3〜5ステップ対応） */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+    gap: 1.2em;
+    margin: 2.5em 0;
+  }
+  /* 5ステップは明示的に5列固定（HTMLでもPDFでも崩れない） */
+  .steps:has(.step:nth-child(5)) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: .7em;
+  }
+  /* 4ステップは4列固定 */
+  .steps:has(.step:nth-child(4)):not(:has(.step:nth-child(5))) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: .9em;
+  }
+  .step {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.3em .7em 1.1em;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,.04);
+    min-width: 0;
+  }
+  /* 5ステップ時はコンパクト */
+  .steps:has(.step:nth-child(5)) .step {
+    padding: 1.1em .5em .9em;
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2em;
+    height: 2.2em;
+    border-radius: 50%;
+    background: var(--brand);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05em;
+    margin-bottom: .5em;
+    box-shadow: 0 4px 12px rgba(255,107,53,.3);
+  }
+  .steps:has(.step:nth-child(5)) .step-num {
+    width: 1.9em;
+    height: 1.9em;
+    font-size: .95em;
+    margin-bottom: .4em;
+  }
+  .step-title {
+    font-weight: 700;
+    margin-bottom: .3em;
+    font-size: .95em;
+    color: var(--fg);
+    line-height: 1.4;
+    word-break: keep-all;
+  }
+  .steps:has(.step:nth-child(5)) .step-title {
+    font-size: .85em;
+  }
+  .step-desc {
+    font-size: .8em;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .steps:has(.step:nth-child(5)) .step-desc {
+    font-size: .72em;
+    line-height: 1.5;
+  }
+  .step::after {
+    content: "→";
+    position: absolute;
+    right: -.6em;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--brand);
+    font-size: 1.2em;
+    font-weight: 700;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .step:last-child::after { display: none; }
+  /* モバイル：5列だと潰れるので2列に折り返し（HTMLのみ・PDFはA4固定なので発火しない） */
+  @media (max-width: 700px) {
+    .steps:has(.step:nth-child(5)),
+    .steps:has(.step:nth-child(4)):not(:has(.step:nth-child(5))) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .step::after { display: none; }
+  }
+
+  /* お問い合わせカード */
+  .contact-card {
+    background: linear-gradient(135deg, #fff 0%, var(--brand-soft) 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2em 2.2em;
+    margin: 2em 0;
+    box-shadow: 0 8px 32px rgba(0,0,0,.06);
+  }
+  .contact-card .contact-title {
+    font-weight: 700;
+    font-size: 1.1em;
+    margin-bottom: 1.2em;
+    color: var(--fg);
+  }
+  .contact-grid {
+    display: grid;
+    gap: 1em;
+  }
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 1.2em;
+    padding: 1em 1.2em;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  .contact-icon {
+    width: 2.6em;
+    height: 2.6em;
+    flex-shrink: 0;
+    background: var(--brand-soft);
+    color: var(--brand);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    font-weight: 700;
+  }
+  .contact-body { flex: 1; min-width: 0; }
+  .contact-label {
+    font-size: .75em;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+  .contact-value {
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: .15em;
+    word-break: break-word;
+  }
+  .contact-value a {
+    color: var(--brand);
+  }
+  .contact-note {
+    margin-top: 1.2em;
+    font-size: .85em;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* フローダイアグラム（縦・横） */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4em;
+    margin: 2em 0;
+  }
+  .flow-row {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .flow-node {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 1em 1.4em;
+    border-radius: 12px;
+    min-width: 220px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04);
+  }
+  .flow-node.brand {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand);
+    font-weight: 700;
+  }
+  .flow-node.soft {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+  }
+  .flow-node-label {
+    font-size: .75em;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: .05em;
+    margin-bottom: .2em;
+  }
+  .flow-node.brand .flow-node-label {
+    color: rgba(255,255,255,.85);
+  }
+  .flow-node-text {
+    font-weight: 600;
+    font-size: 1em;
+  }
+  .flow-arrow {
+    color: var(--brand);
+    font-size: 1.6em;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .flow-arrow-h {
+    color: var(--brand);
+    font-size: 1.4em;
+    font-weight: 700;
+  }
+  .flow-note {
+    font-size: .8em;
+    color: var(--muted);
+    margin-top: .2em;
+  }
+
+  /* ランキング（検索順位） */
+  .ranking {
+    margin: 2em auto;
+    max-width: 540px;
+  }
+  .ranking-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    padding: .8em 1.2em;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: .35em 0;
+  }
+  .ranking-item.gold {
+    background: linear-gradient(90deg, var(--brand-soft), #fff);
+    border-color: var(--brand);
+    border-width: 2px;
+    font-weight: 600;
+  }
+  .ranking-pos {
+    font-weight: 700;
+    color: var(--fg);
+    min-width: 3em;
+  }
+  .ranking-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    margin: 0 1em;
+    overflow: hidden;
+  }
+  .ranking-bar-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 4px;
+  }
+  .ranking-note {
+    font-size: .8em;
+    color: var(--brand);
+    font-weight: 600;
+    min-width: 8em;
+    text-align: right;
+  }
+  .ranking-divider {
+    margin: .7em 0;
+    text-align: center;
+    font-size: .75em;
+    color: var(--muted);
+    letter-spacing: .1em;
+    padding: .4em;
+    background: var(--bg-soft);
+    border-radius: 6px;
+  }
+  .ranking-item.faded {
+    opacity: .45;
+    background: var(--bg-soft);
+  }
+  .ranking-item.faded .ranking-note { color: var(--muted); }
+
+  /* 2カラム比較（Before / After） */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5em;
+    margin: 2em 0;
+  }
+  @media (max-width: 600px) {
+    .compare { grid-template-columns: 1fr; }
+  }
+  .compare-col {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4em 1.6em;
+  }
+  .compare-col-head {
+    font-weight: 700;
+    margin-bottom: 1em;
+    padding-bottom: .6em;
+    border-bottom: 2px solid var(--border);
+    font-size: 1em;
+  }
+  .compare-after {
+    border-color: var(--brand);
+    background: linear-gradient(135deg, #fff 0%, var(--brand-soft) 100%);
+  }
+  .compare-after .compare-col-head {
+    color: var(--brand);
+    border-color: var(--brand);
+  }
+  .compare-col ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+  .compare-col li.new {
+    color: var(--brand);
+    font-weight: 600;
+  }
+
+  /* ビジネスモデル図 */
+  .model {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2em;
+    margin: 2em 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,.04);
+  }
+  .model-title {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 1.5em;
+    color: var(--fg);
+    font-size: .95em;
+    letter-spacing: .05em;
+  }
+  .model-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1em;
+    margin: 1em 0;
+  }
+  .model-actor {
+    text-align: center;
+    background: var(--bg-soft);
+    padding: 1em 1.2em;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: .95em;
+    border: 1px solid var(--border);
+  }
+  .model-platform {
+    background: var(--brand);
+    color: #fff;
+    padding: 1em 1.2em;
+    border-radius: 10px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(255,107,53,.25);
+  }
+  .model-flow {
+    text-align: center;
+    font-size: .8em;
+    color: var(--brand);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .model-flow-line {
+    height: 2px;
+    background: var(--brand);
+    margin: .4em auto;
+    width: 80%;
+    position: relative;
+  }
+  .model-flow-line::after {
+    content: "▶";
+    position: absolute;
+    right: -.5em;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--brand);
+    font-size: .8em;
+  }
+
+  /* カバレッジ（県×業種） */
+  .coverage {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1.5em;
+    margin: 2em 0;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2em 1.5em;
+    box-shadow: 0 4px 20px rgba(0,0,0,.04);
+  }
+  .coverage-cell { text-align: center; }
+  .coverage-num {
+    font-size: 2.8em;
+    font-weight: 800;
+    color: var(--brand);
+    line-height: 1;
+    margin-bottom: .3em;
+  }
+  .coverage-label {
+    font-size: .85em;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .coverage-mult {
+    font-size: 2em;
+    color: var(--muted);
+    font-weight: 300;
+  }
+  .coverage-result {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 1em;
+    padding: 1em;
+    background: var(--brand-soft);
+    border-radius: 10px;
+    font-weight: 700;
+    color: var(--fg);
+    font-size: 1.05em;
+  }
+
+  /* 特徴カードグリッド（3枚は3列・4枚は2x2をデフォルト） */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2em;
+    margin: 2em 0;
+  }
+  /* 4枚用：2x2レイアウト */
+  .feature-grid-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 520px) {
+    .feature-grid-2x2 { grid-template-columns: 1fr; }
+  }
+  .feature-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5em;
+    box-shadow: 0 2px 12px rgba(0,0,0,.04);
+  }
+  .feature-card-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    background: var(--brand);
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: .8em;
+  }
+  .feature-card-title {
+    font-weight: 700;
+    font-size: 1.05em;
+    margin-bottom: .5em;
+  }
+  .feature-card-body {
+    font-size: .9em;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Q&A カードリスト */
+  .qa-list {
+    margin: 2em 0;
+    display: grid;
+    gap: 1em;
+  }
+  .qa-item {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4em 1.6em;
+    box-shadow: 0 2px 12px rgba(0,0,0,.04);
+  }
+  .qa-q {
+    font-weight: 700;
+    font-size: 1em;
+    color: var(--fg);
+    display: flex;
+    gap: .9em;
+    align-items: flex-start;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px dashed var(--border);
+  }
+  .qa-a {
+    color: var(--fg);
+    display: flex;
+    gap: .9em;
+    align-items: flex-start;
+    line-height: 1.85;
+    font-weight: 400;
+  }
+  .qa-mark {
+    flex-shrink: 0;
+    min-width: 2.2em;
+    height: 2.2em;
+    padding: 0 .5em;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .8em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: .03em;
+  }
+  .qa-mark-q {
+    background: var(--brand);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,107,53,.25);
+  }
+  .qa-mark-a {
+    background: #fff;
+    color: var(--brand);
+    border: 2px solid var(--brand);
+  }
+  .qa-text {
+    flex: 1;
+    min-width: 0;
+    padding-top: .25em;
+  }
+
+  /* CTAクロージング */
+  .closing {
+    margin: 3em 0 2em;
+    padding: 2.5em 2em;
+    text-align: center;
+    background: linear-gradient(135deg, var(--brand) 0%, #ea580c 100%);
+    color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(255,107,53,.25);
+  }
+  .closing-title {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: .8em;
+  }
+  .closing-body {
+    font-size: .95em;
+    opacity: .95;
+    line-height: 1.8;
+  }
+
+  /* アクションボタンエリア（PDF/印刷） */
+  .actions {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: .5em;
+    z-index: 100;
+  }
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .4em;
+    background: #fff;
+    color: var(--brand-deep);
+    padding: .55em 1.1em;
+    border-radius: 999px;
+    font-size: .85em;
+    font-weight: 700;
+    box-shadow: 0 4px 16px rgba(0,0,0,.12);
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    border-color: var(--brand);
+  }
+  .action-btn.primary {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand);
+  }
+  .action-btn.primary:hover {
+    background: var(--brand-hover);
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; margin: 0; }
+    /* 1ページ縦長PDFのため、画面表示時と同じ余白感をキープ */
+    .doc { box-shadow: none; padding: 3em 3em 4em; margin: 0; max-width: none; border-radius: 0; }
+    .doc::before { display: block; }  /* ブランドストライプは保持 */
+    .doc::after { display: none; }
+    .actions { display: none; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, pre, blockquote, .step, .flow-node, .contact-card, .hero, .model, .compare, .ranking, .feature-card, .qa-item { page-break-inside: avoid; }
+    .closing { background: var(--brand-soft) !important; color: var(--fg) !important; box-shadow: none !important; }
+    .closing-title, .closing-body { color: var(--fg) !important; }
+    a { border-bottom: none; }
+    /*
+     * Chrome のヘッドレスPDF生成は、円形の小さい要素にかかった有色 box-shadow を
+     * "四角の塗りブロック" として描画するバグがある（HTMLでは正しく丸い影）。
+     * 印刷時は影を全て無効化して見た目を正常化する。
+     */
+    .step-num,
+    .qa-mark-q,
+    .qa-mark-a,
+    .feature-card-num,
+    .model-platform,
+    .action-btn,
+    .ranking-item.gold,
+    .ranking-bar-fill,
+    .step,
+    .flow-node,
+    .contact-card,
+    .feature-card,
+    .qa-item,
+    .model,
+    .coverage,
+    .hero,
+    table {
+      box-shadow: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="actions">
+  <a class="action-btn primary" href="02_提案資料.pdf" download>⬇ PDFをダウンロード</a>
+  <button class="action-btn" onclick="window.print()">🖨 印刷</button>
+</div>
+<div class="doc">
+<h1>まちセレクト 掲載ご提案資料</h1>
+<p><strong>地域事業者様向け 詳細ご提案書 / 2026年5月版</strong></p>
+<hr>
+<div class="hero">
+  <div class="hero-eyebrow">DETAILED PROPOSAL / 2026 SPRING</div>
+  <div class="hero-title">Web集客の "最初の一歩" を、無料で。</div>
+  <div class="hero-sub">完全無料・地域 × 業種特化の総合ポータル「まちセレクト」</div>
+  <div class="hero-tag">地域事業者様向け 詳細ご提案書</div>
+</div><hr>
+<h2>目次</h2>
+<ol>
+<li>はじめに ─ 地域事業者の集客課題</li>
+<li>なぜ今、Web集客が必要なのか</li>
+<li>既存のWeb集客手段の問題点</li>
+<li>まちセレクトのご提案</li>
+<li>特徴1: 完全無料の理由（広告モデル詳説）</li>
+<li>特徴2: SEO対策で集客できる仕組み（やさしく解説）</li>
+<li>特徴3: 全国対応・全業種対応の強み</li>
+<li>掲載項目の詳細</li>
+<li>期待される効果</li>
+<li>競合サービスとの比較</li>
+<li>掲載までのスケジュール</li>
+<li>料金プラン</li>
+<li>よくあるご質問</li>
+<li>お問い合わせ</li>
+</ol>
+<hr>
+<h2>1. はじめに ─ 地域事業者の集客課題</h2>
+<p>中小規模の地域事業者様（飲食店・美容室・士業・医療・教育・小売など）が直面する <strong>共通の悩み</strong> は次の3つに集約されます。</p>
+<h3>① <strong>新規のお客様が増えない</strong></h3>
+<ul>
+<li>常連様だけでは売上が頭打ち</li>
+<li>紹介・口コミ頼みでは新規開拓に時間がかかる</li>
+</ul>
+<h3>② <strong>Web集客にお金をかけられない</strong></h3>
+<ul>
+<li>ホームページ制作に数十万円</li>
+<li>食べログ・ホットペッパー等のポータルは月額数万円〜</li>
+<li>広告を出しても効果が見えにくい</li>
+</ul>
+<h3>③ <strong>何から始めればいいかわからない</strong></h3>
+<ul>
+<li>SEO・MEO・SNS… 用語ばかり並んで難しい</li>
+<li>業者に頼むと高い、自分でやる時間もない</li>
+</ul>
+<hr>
+<h2>2. なぜ今、Web集客が必要なのか</h2>
+<blockquote>
+<p><strong>「行ったことないお店をどう探しますか？」</strong></p>
+</blockquote>
+<p>総務省『情報通信白書』および各種調査によると、地域の店舗・サービスを探すとき、生活者の大多数がまずスマートフォンで検索を行います。</p>
+<div class="flow">
+  <div class="flow-node">
+    <div class="flow-node-label">行動 1</div>
+    <div class="flow-node-text">「カフェ 行きたい」と思う</div>
+  </div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-node">
+    <div class="flow-node-label">行動 2</div>
+    <div class="flow-node-text">Googleで「池袋 カフェ おしゃれ」と検索</div>
+  </div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-node soft">
+    <div class="flow-node-label">行動 3</div>
+    <div class="flow-node-text">上位 <strong>3〜5件</strong> のサイトを見る</div>
+  </div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-node brand">
+    <div class="flow-node-label">行動 4</div>
+    <div class="flow-node-text">行くお店を決定 → 来店</div>
+  </div>
+</div><p><strong>ここで重要なのは &quot;上位に表示されること&quot;</strong> です。
+2ページ目以降は、検索ユーザーのほとんどが見ません。</p>
+<hr>
+<h2>3. 既存のWeb集客手段の問題点</h2>
+<table>
+<thead>
+<tr>
+<th>手段</th>
+<th>課題</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>自店舗のホームページ</td>
+<td>作っただけでは検索されない・上位表示の難易度が高い</td>
+</tr>
+<tr>
+<td>Googleビジネスプロフィール</td>
+<td>競合店が多いエリアでは埋もれる・情報量に限界</td>
+</tr>
+<tr>
+<td>食べログ・ホットペッパー等</td>
+<td>月額数万円・解約しづらい・業種限定</td>
+</tr>
+<tr>
+<td>Instagram・X等のSNS</td>
+<td>フォロワーがいないと届かない・運用工数が大きい</td>
+</tr>
+<tr>
+<td>チラシ・ポスティング</td>
+<td>コストが高く、効果測定もできない</td>
+</tr>
+</tbody></table>
+<p>→ <strong>「無料で、SEOに強く、業種を問わない」選択肢が無かった</strong> のがこれまでの状況です。</p>
+<hr>
+<h2>4. まちセレクトのご提案</h2>
+<h3>私たちのコンセプト</h3>
+<div class="hero">
+  <div class="hero-eyebrow">CONCEPT</div>
+  <div class="hero-title">Web集客の最初の一歩を、<br>お金をかけずに踏み出せる場所。</div>
+</div><div class="feature-grid feature-grid-2x2">
+  <div class="feature-card">
+    <div class="feature-card-num">①</div>
+    <div class="feature-card-title">完全無料</div>
+    <div class="feature-card-body">店舗ページを <strong>0円</strong> で掲載。初期費用・月額費・成果報酬・解約金、すべて発生しません。</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-card-num">②</div>
+    <div class="feature-card-title">SEO最適化</div>
+    <div class="feature-card-body">地域 × 業種で <strong>Google検索上位</strong> を狙う構造設計。プロのSEO観点で内部最適化済み。</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-card-num">③</div>
+    <div class="feature-card-title">全国・全業種</div>
+    <div class="feature-card-body"><strong>47都道府県 × 数百業種</strong> に対応。「うちは対象外」がほぼ起こらない設計。</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-card-num">④</div>
+    <div class="feature-card-title">スマホ最適化</div>
+    <div class="feature-card-body">表示速度・操作性ともにスマートフォンで快適。Googleマップ・SNS連携対応。</div>
+  </div>
+</div><hr>
+<h2>5. 特徴1: 完全無料の理由（広告モデル詳説）</h2>
+<h3>5-1. 私たちの収益構造</h3>
+<div class="model">
+  <div class="model-title">まちセレクトの収益モデル</div>
+  <div class="model-row">
+    <div class="model-actor">掲載事業者様</div>
+    <div class="model-flow">無料で掲載<div class="model-flow-line"></div></div>
+    <div class="model-platform">まちセレクト</div>
+  </div>
+  <div class="model-row">
+    <div class="model-actor">広告主・パートナー企業</div>
+    <div class="model-flow">広告収入<div class="model-flow-line"></div></div>
+    <div class="model-platform">まちセレクト（運営費）</div>
+  </div>
+</div><h3>5-2. 具体的に「無料」とは</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>金額</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>初期費用</td>
+<td><strong>0円</strong></td>
+</tr>
+<tr>
+<td>月額費用</td>
+<td><strong>0円</strong></td>
+</tr>
+<tr>
+<td>成果報酬（来店・予約発生時）</td>
+<td><strong>0円</strong></td>
+</tr>
+<tr>
+<td>ページ作成代行費（写真・文章作成）</td>
+<td><strong>0円</strong></td>
+</tr>
+<tr>
+<td>解約手数料</td>
+<td><strong>0円</strong></td>
+</tr>
+<tr>
+<td>情報修正費</td>
+<td><strong>0円</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>「<strong>無料 = 質が低い</strong>」というイメージを払拭するため、ページ品質は弊社が直接管理し、SEO観点で最適化しています。</p>
+</blockquote>
+<h3>5-3. なぜ無料で運営できるのか</h3>
+<p>ポータル内に <strong>広告枠</strong>（左右サイドバー・記事下・カテゴリページ上部 等）を設置し、広告主から収益を得る <strong>広告モデル</strong> を採用しています。これは Yahoo! ニュース、価格.com、食べログ無料プランなどでも採用されている、Web業界では一般的なモデルです。</p>
+<p><strong>重要なポイント</strong>:</p>
+<ul>
+<li>掲載事業者様のページ自体には、競合の広告は <strong>表示されません</strong></li>
+<li>広告枠は別エリアに切り分けてあり、ユーザー体験を損ねません</li>
+<li>掲載をやめても費用は発生しません</li>
+</ul>
+<hr>
+<h2>6. 特徴2: SEO対策で集客できる仕組み（やさしく解説）</h2>
+<h3>6-1. そもそもSEOって何？</h3>
+<blockquote>
+<p><strong>SEO = Googleに見つけてもらいやすくする工夫</strong></p>
+</blockquote>
+<p>たとえば「池袋 カフェ おしゃれ」とGoogleで検索したとき、</p>
+<div class="ranking">
+  <div class="ranking-item gold">
+    <span class="ranking-pos">1位</span>
+    <div class="ranking-bar"><div class="ranking-bar-fill" style="width:90%"></div></div>
+    <span class="ranking-note">クリック率 50%超</span>
+  </div>
+  <div class="ranking-item">
+    <span class="ranking-pos">2位</span>
+    <div class="ranking-bar"><div class="ranking-bar-fill" style="width:55%"></div></div>
+    <span class="ranking-note">2割前後</span>
+  </div>
+  <div class="ranking-item">
+    <span class="ranking-pos">3位</span>
+    <div class="ranking-bar"><div class="ranking-bar-fill" style="width:35%"></div></div>
+    <span class="ranking-note">1割前後</span>
+  </div>
+  <div class="ranking-item">
+    <span class="ranking-pos">4-10位</span>
+    <div class="ranking-bar"><div class="ranking-bar-fill" style="width:20%"></div></div>
+    <span class="ranking-note">合計 1割程度</span>
+  </div>
+  <div class="ranking-divider">─── 1ページ目 / 2ページ目の壁 ───</div>
+  <div class="ranking-item faded">
+    <span class="ranking-pos">11位〜</span>
+    <div class="ranking-bar"><div class="ranking-bar-fill" style="width:5%"></div></div>
+    <span class="ranking-note">ほぼ見られない</span>
+  </div>
+</div><p><strong>「1ページ目に表示されること」</strong> が、Web集客の基本中の基本です。</p>
+<h3>6-2. なぜ普通のホームページではSEOが難しいのか</h3>
+<p>新しく作ったホームページがGoogleの上位に出るには、通常 <strong>6ヶ月〜2年</strong> の運営期間と専門知識が必要です。理由は以下の通り。</p>
+<table>
+<thead>
+<tr>
+<th>上位表示に必要な要素</th>
+<th>個人事業者が単独で実現するのが難しい理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>① ページ数の多さ</td>
+<td>自社サイト1つでは検索キーワードの幅が限られる</td>
+</tr>
+<tr>
+<td>② 被リンク（他サイトからの紹介）</td>
+<td>公開直後は誰もリンクを貼ってくれない</td>
+</tr>
+<tr>
+<td>③ ドメインの信頼度</td>
+<td>新規ドメインはGoogleからの信頼が0からスタート</td>
+</tr>
+<tr>
+<td>④ サイトの表示速度・スマホ対応</td>
+<td>技術的な改修が必要</td>
+</tr>
+<tr>
+<td>⑤ 構造化データ</td>
+<td>専門知識が必要</td>
+</tr>
+</tbody></table>
+<h3>6-3. まちセレクトのSEO戦略</h3>
+<h4>戦略①: 地域 × 業種 の検索キーワードを網羅</h4>
+<div class="coverage">
+  <div class="coverage-cell">
+    <div class="coverage-num">47</div>
+    <div class="coverage-label">都道府県</div>
+  </div>
+  <div class="coverage-cell coverage-mult">×</div>
+  <div class="coverage-cell">
+    <div class="coverage-num">数百</div>
+    <div class="coverage-label">業種</div>
+  </div>
+  <div class="coverage-result">＝ 数万通りの検索ページを自動生成</div>
+</div><p>例：「渋谷 美容室」「梅田 ラーメン」「目白 整体」「天神 Web制作」… すべてに専用ページが存在します。</p>
+<h4>戦略②: 構造化データ（LocalBusiness）対応</h4>
+<p>Googleが「これはお店のページだ」と理解できる形式（JSON-LD）で書かれています。これにより:</p>
+<ul>
+<li>Googleマップへの自動連携</li>
+<li>営業時間・電話番号がGoogle検索結果に直接表示される可能性</li>
+<li>「近くのカフェ」のような地名+業種検索で表示されやすい</li>
+</ul>
+<h4>戦略③: スマホ高速表示</h4>
+<p>Next.js + 高速CDN を使用し、スマホで開いて <strong>1秒以内</strong> に表示される速度を実現。Googleの「ページ体験」評価で高得点。</p>
+<h4>戦略④: ドメインの信頼を全店舗で共有</h4>
+<p>「japan-local-portal.onrender.com」というポータルの信頼が、掲載店舗1件1件のページにも波及します。新規ドメインでHPを作るより圧倒的に有利な立ち位置からスタートできます。</p>
+<h4>戦略⑤: 記事コンテンツ（特集記事）との内部リンク</h4>
+<p>「池袋カフェおすすめ10選」のような特集記事を作り、店舗ページへリンクを張ります。これにより:</p>
+<ul>
+<li>自然な被リンクが店舗ページに集まる</li>
+<li>「池袋 カフェ おすすめ」のような検索ワードでも訪問される</li>
+<li>記事内のリンクで複数店舗を回遊してもらえる</li>
+</ul>
+<h3>6-4. 御社が得られる成果</h3>
+<p>掲載していただくと、御社の店舗ページに次のような流入経路が生まれます。</p>
+<table>
+<thead>
+<tr>
+<th>検索キーワード例</th>
+<th>御社のページへの流入経路</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>「池袋 カフェ」</td>
+<td>まちセレクトのカフェ一覧ページ経由</td>
+</tr>
+<tr>
+<td>「池袋 おしゃれ カフェ」</td>
+<td>まちセレクトの特集記事経由</td>
+</tr>
+<tr>
+<td>「○○店（御社名）」</td>
+<td>直接御社のページへ</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. 特徴3: 全国対応・全業種対応の強み</h2>
+<h3>7-1. 業種を問わず掲載可能</h3>
+<table>
+<thead>
+<tr>
+<th>カテゴリ</th>
+<th>業種例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>飲食</td>
+<td>居酒屋・カフェ・ラーメン・寿司・焼肉・イタリアン 等</td>
+</tr>
+<tr>
+<td>美容</td>
+<td>美容室・ネイル・脱毛・エステ・まつエク 等</td>
+</tr>
+<tr>
+<td>医療</td>
+<td>歯医者・整体・整骨院・鍼灸・内科クリニック 等</td>
+</tr>
+<tr>
+<td>暮らし</td>
+<td>不動産・引越・リフォーム・ハウスクリーニング 等</td>
+</tr>
+<tr>
+<td>ビジネス</td>
+<td>税理士・行政書士・社労士・Web制作・印刷会社 等</td>
+</tr>
+<tr>
+<td>教育・スクール</td>
+<td>学習塾・パーソナルジム・英会話・プログラミング 等</td>
+</tr>
+<tr>
+<td>その他</td>
+<td>ペット・ブライダル・葬儀・冠婚葬祭 等</td>
+</tr>
+</tbody></table>
+<p>→ <strong>「うちの業種、対象外?」がほぼ起こらない設計</strong> になっています。</p>
+<h3>7-2. 47都道府県すべて対応</h3>
+<p>山形県のラーメン店から沖縄県の不動産まで、地域を問わず掲載可能。地方こそ「他のポータルに無い」状態が多いため、まちセレクトでの上位表示が狙いやすいエリアもございます。</p>
+<hr>
+<h2>8. 掲載項目の詳細</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+<th>必須/任意</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>店舗名</td>
+<td>正式名称・略称</td>
+<td>必須</td>
+</tr>
+<tr>
+<td>住所</td>
+<td>都道府県〜番地まで</td>
+<td>必須</td>
+</tr>
+<tr>
+<td>電話番号</td>
+<td>お客様問合せ用</td>
+<td>任意</td>
+</tr>
+<tr>
+<td>営業時間</td>
+<td>曜日別に詳細記載可能</td>
+<td>必須</td>
+</tr>
+<tr>
+<td>定休日</td>
+<td>不定休もOK</td>
+<td>必須</td>
+</tr>
+<tr>
+<td>料金目安</td>
+<td>例：¥800〜¥2,000</td>
+<td>任意</td>
+</tr>
+<tr>
+<td>メイン画像</td>
+<td>店内・商品・外観</td>
+<td>必須</td>
+</tr>
+<tr>
+<td>紹介文（長文）</td>
+<td>400字程度</td>
+<td>必須</td>
+</tr>
+<tr>
+<td>キャッチコピー（短文）</td>
+<td>50字程度</td>
+<td>必須</td>
+</tr>
+<tr>
+<td>おすすめポイント</td>
+<td>箇条書き 3〜5項目</td>
+<td>必須</td>
+</tr>
+<tr>
+<td>特徴タグ</td>
+<td>駅近・個室・Wi-Fi・キッズOK等</td>
+<td>必須</td>
+</tr>
+<tr>
+<td>公式サイトURL</td>
+<td>あればリンク掲載</td>
+<td>任意</td>
+</tr>
+<tr>
+<td>SNSリンク</td>
+<td>Instagram / X / LINE 等</td>
+<td>任意</td>
+</tr>
+<tr>
+<td>Googleマップ</td>
+<td>自動連携</td>
+<td>必須</td>
+</tr>
+</tbody></table>
+<p><strong>全項目、御社でご用意できない場合は弊社で作成代行いたします（無料）。</strong></p>
+<hr>
+<h2>9. 期待される効果</h2>
+<blockquote>
+<p>※ 効果には個人差があり、地域・業種・競合数により異なります。以下は典型的なパターンです。</p>
+</blockquote>
+<h3>9-1. 流入経路の多様化</h3>
+<div class="compare">
+  <div class="compare-col">
+    <div class="compare-col-head">掲載前</div>
+    <ul>
+      <li>自社SNSのフォロワー</li>
+      <li>既存のお客様からの紹介</li>
+      <li>偶然の通行人・通りすがり</li>
+    </ul>
+  </div>
+  <div class="compare-col compare-after">
+    <div class="compare-col-head">掲載後</div>
+    <ul>
+      <li>自社SNSのフォロワー</li>
+      <li>既存のお客様からの紹介</li>
+      <li>偶然の通行人・通りすがり</li>
+      <li class="new">＋ まちセレクト経由（地域×業種）</li>
+      <li class="new">＋ まちセレクト特集記事経由</li>
+      <li class="new">＋ Googleマップ経由（構造化データ連携）</li>
+    </ul>
+  </div>
+</div><h3>9-2. 検索結果での露出機会</h3>
+<ul>
+<li>自店舗の名前で検索された時 → ホームページとまちセレクトの両方が表示される（占有率UP）</li>
+<li>地域 × 業種で検索された時 → 一覧ページ経由で発見される</li>
+<li>特集記事経由 → 「池袋カフェおすすめ10選」のような記事から流入</li>
+</ul>
+<h3>9-3. 中長期的な信頼形成</h3>
+<p>掲載店舗数が増えるほど、まちセレクト自体のGoogle評価も上がり、それが各店舗ページの評価にも波及します（<strong>ドメイン信頼の共有効果</strong>）。早期に掲載いただくほど、この恩恵を長く受けられます。</p>
+<hr>
+<h2>10. 競合サービスとの比較</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>まちセレクト</th>
+<th>食べログ等の業種特化</th>
+<th>Googleビジネスプロフィール</th>
+<th>自店舗HP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>掲載費用</td>
+<td><strong>完全無料</strong></td>
+<td>月額3,300円〜10万円</td>
+<td>無料</td>
+<td>制作費20万〜100万</td>
+</tr>
+<tr>
+<td>対応業種</td>
+<td><strong>全業種</strong></td>
+<td>業種限定</td>
+<td>全業種</td>
+<td>自由</td>
+</tr>
+<tr>
+<td>SEO強さ</td>
+<td><strong>高（地域×業種設計）</strong></td>
+<td>高（業種限定）</td>
+<td>中（マップ中心）</td>
+<td>個別に努力が必要</td>
+</tr>
+<tr>
+<td>写真・文章の代行</td>
+<td><strong>無料で代行</strong></td>
+<td>一部有料</td>
+<td>自分で</td>
+<td>業者依頼が必要</td>
+</tr>
+<tr>
+<td>解約</td>
+<td>いつでも無料</td>
+<td>縛り期間あり</td>
+<td>自分で削除</td>
+<td>サイト閉鎖</td>
+</tr>
+<tr>
+<td>競合の広告表示</td>
+<td>御社ページには出ない</td>
+<td>同業他社が表示される</td>
+<td>なし</td>
+<td>なし</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>11. 掲載までのスケジュール</h2>
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Web申込</div>
+    <div class="step-desc">フォームから送信<br><strong>5分</strong></div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">ヒアリング</div>
+    <div class="step-desc">電話 or メール<br><strong>15-30分</strong></div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">制作・SEO最適化</div>
+    <div class="step-desc">弊社作業<br><strong>3-5営業日</strong></div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">最終確認</div>
+    <div class="step-desc">御社にてご確認<br><strong>1-2営業日</strong></div>
+  </div>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-title">公開</div>
+    <div class="step-desc">即日反映<br><strong>0日</strong></div>
+  </div>
+</div><p>最短 <strong>3営業日</strong> 、平均 <strong>5〜7営業日</strong> で公開まで完了します。</p>
+<hr>
+<h2>12. 料金プラン</h2>
+<h3>12-1. 基本プラン：<strong>無料プラン</strong></h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>月額費用</td>
+<td><strong>0円</strong></td>
+</tr>
+<tr>
+<td>掲載期間</td>
+<td>無期限</td>
+</tr>
+<tr>
+<td>掲載できる写真</td>
+<td>1枚（メイン画像）</td>
+</tr>
+<tr>
+<td>掲載できる情報</td>
+<td>上記「掲載項目の詳細」のすべて</td>
+</tr>
+<tr>
+<td>制作代行</td>
+<td>無料</td>
+</tr>
+<tr>
+<td>修正回数</td>
+<td>無制限・無料</td>
+</tr>
+<tr>
+<td>解約</td>
+<td>いつでも無料</td>
+</tr>
+</tbody></table>
+<h3>12-2. オプション（任意）</h3>
+<blockquote>
+<p>※ 無料プランだけで十分集客可能です。以下は「もっと深く取り組みたい」事業者様向けです。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>オプション</th>
+<th>内容</th>
+<th>費用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>プレミアム掲載</td>
+<td>検索結果の <strong>最上位に固定表示</strong>（PRバッジ付き）</td>
+<td>個別見積もり</td>
+</tr>
+<tr>
+<td>追加写真枠</td>
+<td>店内・メニュー写真等を <strong>最大10枚</strong> 掲載</td>
+<td>個別見積もり</td>
+</tr>
+<tr>
+<td>特集記事への露出</td>
+<td>「池袋カフェ10選」等の記事内で <strong>メインで取り上げ</strong></td>
+<td>個別見積もり</td>
+</tr>
+<tr>
+<td>サイト診断</td>
+<td>御社のホームページのSEO診断レポート</td>
+<td>個別見積もり</td>
+</tr>
+<tr>
+<td>HP制作</td>
+<td>自社ホームページが必要な場合</td>
+<td>個別見積もり</td>
+</tr>
+<tr>
+<td>MEO対策</td>
+<td>Googleマップ上位表示の運用代行</td>
+<td>個別見積もり</td>
+</tr>
+</tbody></table>
+<p>オプションのご紹介は、まずは無料掲載で効果をご確認いただいた <strong>後</strong> にお話しさせていただきます。最初から営業はいたしません。</p>
+<hr>
+<h2>13. よくあるご質問</h2>
+<div class="qa-list">
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-mark qa-mark-q">Q1</span><span class="qa-text">本当に無料ですか？後から請求はありませんか？</span></div>
+    <div class="qa-a"><span class="qa-mark qa-mark-a">A</span><span class="qa-text">はい、完全無料です。広告枠の収益で運営しており、掲載料・成果報酬は一切いただきません。</span></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-mark qa-mark-q">Q2</span><span class="qa-text">解約はできますか？</span></div>
+    <div class="qa-a"><span class="qa-mark qa-mark-a">A</span><span class="qa-text">メール1通でいつでも削除いたします。違約金・解約手数料はありません。</span></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-mark qa-mark-q">Q3</span><span class="qa-text">私のお店の業種にも対応していますか？</span></div>
+    <div class="qa-a"><span class="qa-mark qa-mark-a">A</span><span class="qa-text">ほぼ全業種に対応しています（公序良俗に反する業種を除く）。事前にご相談ください。</span></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-mark qa-mark-q">Q4</span><span class="qa-text">競合店も同じポータルに載るのですか？</span></div>
+    <div class="qa-a"><span class="qa-mark qa-mark-a">A</span><span class="qa-text">はい、同地域・同業種の他店舗も掲載される可能性があります。ただし、ページ内に競合の広告は表示されません。ユーザーは比較検討した上で御社を選びます。掲載写真・紹介文の充実度が選ばれる決め手になります（こちらも弊社で最適化を支援します）。</span></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-mark qa-mark-q">Q5</span><span class="qa-text">写真や紹介文を用意できません。</span></div>
+    <div class="qa-a"><span class="qa-mark qa-mark-a">A</span><span class="qa-text">ご安心ください。基本情報をヒアリングし、弊社で写真撮影〜文章作成まで代行します（無料）。</span></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-mark qa-mark-q">Q6</span><span class="qa-text">ホームページを持っていません。</span></div>
+    <div class="qa-a"><span class="qa-mark qa-mark-a">A</span><span class="qa-text">問題ありません。まちセレクト内に御社専用の店舗ページが作られます。ホームページの代わりとして使っていただけます。</span></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-mark qa-mark-q">Q7</span><span class="qa-text">効果はどのくらいで出ますか？</span></div>
+    <div class="qa-a"><span class="qa-mark qa-mark-a">A</span><span class="qa-text">一般的に、Googleが新しいページを認識して評価し始めるまで <strong>2〜4週間</strong>、安定的に検索流入が増えるまで <strong>2〜3ヶ月</strong> が目安です。掲載後は管理画面で訪問数の確認も可能になる予定です。</span></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-mark qa-mark-q">Q8</span><span class="qa-text">「無料」でやっていけるのか心配です。継続性は大丈夫ですか？</span></div>
+    <div class="qa-a"><span class="qa-mark qa-mark-a">A</span><span class="qa-text">ご懸念ごもっともです。広告モデルは Yahoo!・価格.com・食べログ無料プランなど、Web業界で長年にわたり成立してきた一般的なモデルです。広告枠での収益で運営費を賄う設計ですので、継続的な運営が可能です。</span></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-mark qa-mark-q">Q9</span><span class="qa-text">個人情報の取り扱いはどうなっていますか？</span></div>
+    <div class="qa-a"><span class="qa-mark qa-mark-a">A</span><span class="qa-text">ヒアリング時に取得した個人情報（担当者氏名・連絡先等）は、プライバシーポリシーに基づき厳重に管理し、第三者に提供することはありません。</span></div>
+  </div>
+</div><hr>
+<h2>14. お問い合わせ</h2>
+<div class="contact-card">
+  <div class="contact-title">ご質問だけでも歓迎です。営業のお電話はいたしません。</div>
+  <div class="contact-grid">
+    <div class="contact-row">
+      <div class="contact-icon">📝</div>
+      <div class="contact-body">
+        <div class="contact-label">Web申込フォーム</div>
+        <div class="contact-value"><a href="https://japan-local-portal.onrender.com/free-listing/apply">japan-local-portal.onrender.com/free-listing/apply</a></div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-icon">✉</div>
+      <div class="contact-body">
+        <div class="contact-label">メール</div>
+        <div class="contact-value">info@example.com</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-icon">☎</div>
+      <div class="contact-body">
+        <div class="contact-label">お電話</div>
+        <div class="contact-value">03-xxxx-xxxx（平日 10:00 - 18:00）</div>
+      </div>
+    </div>
+    <div class="contact-row">
+      <div class="contact-icon">👤</div>
+      <div class="contact-body">
+        <div class="contact-label">ご担当</div>
+        <div class="contact-value">まちセレクト 営業部</div>
+      </div>
+    </div>
+  </div>
+</div><hr>
+<div class="closing">
+  <div class="closing-title">Web集客は、一度仕組みを作ってしまえば資産になります。</div>
+  <div class="closing-body">
+    大切なのは、<strong>今、最初の一歩を踏み出すかどうか</strong>。<br>
+    まちセレクトはその一歩を、無料でご提供します。<br>
+    御社の街のお客様が、御社を見つけるその瞬間を、私たちが全力でつくります。
+  </div>
+</div><p><strong>まちセレクト 営業部 / 2026年5月</strong></p>
+<hr>
+<p><em>※ 本資料は2026年5月時点の情報に基づきます。仕様・料金プランは予告なく変更される場合があります。</em>
+<em>※ 効果には個人差があります。地域・業種・競合数等により異なります。</em>
+<em>※ 図中の数値（クリック率等）は一般的な調査結果に基づく目安です。</em></p>
+</div></body></html>
