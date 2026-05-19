@@ -108,7 +108,18 @@ export async function POST(request: Request) {
       interestedServices: d.wantsDiagnosis
         ? Array.from(new Set([...(d.interestedServices ?? []), "diagnosis"]))
         : d.interestedServices ?? [],
-      imageUrl: d.imageUrl || undefined,
+      imageUrl:
+        // imageUrls 配列があれば先頭をメイン、無ければ imageUrl を使う
+        Array.isArray(d.imageUrls) && d.imageUrls.length > 0
+          ? d.imageUrls[0]
+          : d.imageUrl || undefined,
+      imageUrls:
+        Array.isArray(d.imageUrls) && d.imageUrls.length > 0
+          ? d.imageUrls
+          : d.imageUrl
+            ? [d.imageUrl]
+            : undefined,
+      uploadSessionId: d.uploadSessionId || undefined,
     });
     return NextResponse.json({ ok: true, leadId: lead.id });
   }

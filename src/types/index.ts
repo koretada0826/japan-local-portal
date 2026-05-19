@@ -99,6 +99,8 @@ export type Lead = {
   phone: string;
   needs?: string;
   imageUrl?: string;
+  imageUrls?: string[];
+  uploadSessionId?: string;
   hasWebsite?: boolean;
   hasGoogleBusinessProfile?: boolean;
   usesSns?: boolean;

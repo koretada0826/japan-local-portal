@@ -30,6 +30,9 @@ export const freeListingSchema = z.object({
   googleMapUrl: z.string().max(500).optional().or(z.literal("")),
   description: z.string().max(2000).optional().or(z.literal("")),
   imageUrl: z.string().max(500).optional().or(z.literal("")),
+  // フロントからは JSON文字列 or 配列で来る。両方受ける
+  imageUrls: z.array(z.string().max(500)).max(10).optional(),
+  uploadSessionId: z.string().max(64).optional().or(z.literal("")),
   businessHours: z.string().max(200).optional().or(z.literal("")),
   regularHoliday: z.string().max(100).optional().or(z.literal("")),
   priceRange: z.string().max(100).optional().or(z.literal("")),

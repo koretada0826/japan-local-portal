@@ -94,7 +94,15 @@ export async function POST(request: Request) {
 
   // ファイル名はランダム生成（XSS対策・予測不能化）
   const safeExt = ext === "jpeg" ? "jpg" : ext;
-  const objectKey = `lead-uploads/${new Date().toISOString().slice(0, 7)}/${randomUUID()}.${safeExt}`;
+
+  // フォーム側から渡される sessionId（UUID形式）でフォルダを分ける
+  // → 1つの店からの写真が1フォルダに集まる
+  const rawSession = String(formData.get("sessionId") ?? "").trim();
+  const safeSession = /^[a-f0-9-]{8,40}$/i.test(rawSession)
+    ? rawSession
+    : "_misc";
+
+  const objectKey = `lead-uploads/${safeSession}/${randomUUID()}.${safeExt}`;
 
   try {
     const buffer = Buffer.from(await file.arrayBuffer());

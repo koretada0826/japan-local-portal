@@ -13,7 +13,7 @@ import {
   getSubCategories,
 } from "@/data/categories";
 import { cn } from "@/lib/utils";
-import { ImageUpload } from "@/components/ImageUpload";
+import { MultiImageUpload } from "@/components/MultiImageUpload";
 
 const interestedServiceOptions = [
   { value: "hp", label: "HP制作" },
@@ -38,6 +38,7 @@ export function FreeListingForm() {
     resolver: zodResolver(freeListingSchema),
     defaultValues: {
       interestedServices: [],
+      imageUrls: [],
     },
   });
 
@@ -162,17 +163,21 @@ export function FreeListingForm() {
             className="input"
           />
         </Field>
-        <Field label="お店の写真（メイン画像 1枚）">
-          <ImageUpload
-            name="imageUrl"
-            onChange={(url) => setValue("imageUrl", url, { shouldValidate: true })}
+        <Field label="お店の写真（最大5枚 / 1枚目がメイン画像）">
+          <MultiImageUpload
+            name="imageUrls"
+            sessionIdName="uploadSessionId"
+            maxFiles={5}
+            onChange={(urls) => {
+              setValue("imageUrls", urls, { shouldValidate: true });
+              setValue("imageUrl", urls[0] ?? "", { shouldValidate: true });
+            }}
           />
           <ul className="mt-2 text-[11px] text-muted-soft space-y-0.5 leading-relaxed">
-            <li>・アップロードできる画像: <strong className="text-foreground">1枚のみ</strong>（店舗ページのメイン画像になります）</li>
-            <li>・形式: JPG / PNG / WebP</li>
-            <li>・サイズ: <strong className="text-foreground">最大 5MB</strong></li>
+            <li>・店内・メニュー・外観など <strong className="text-foreground">最大5枚</strong> アップロード可能</li>
+            <li>・<strong className="text-foreground">1枚目</strong> が店舗ページのメイン画像になります（後でメインに変更可）</li>
+            <li>・形式: JPG / PNG / WebP・各ファイル <strong className="text-foreground">最大 5MB</strong></li>
             <li>・推奨アスペクト比: <strong className="text-foreground">16:10</strong>（例：1600×1000px）</li>
-            <li>・あとから差し替え・追加写真の掲載は弊社にご相談ください</li>
           </ul>
         </Field>
         <Field label="営業時間">

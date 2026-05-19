@@ -30,6 +30,8 @@ type LeadRow = {
   memo: string | null;
   next_action_date: string | null;
   image_url: string | null;
+  image_urls: string[] | null;
+  upload_session_id: string | null;
   created_at: string;
 };
 
@@ -55,6 +57,8 @@ function rowToLead(r: LeadRow): Lead {
     memo: r.memo ?? undefined,
     nextActionDate: r.next_action_date ?? undefined,
     imageUrl: r.image_url ?? undefined,
+    imageUrls: r.image_urls ?? undefined,
+    uploadSessionId: r.upload_session_id ?? undefined,
     createdAt: r.created_at,
   };
 }
@@ -80,6 +84,8 @@ function leadToRow(l: Partial<Lead>): Partial<LeadRow> {
     ...(l.memo !== undefined && { memo: l.memo }),
     ...(l.nextActionDate !== undefined && { next_action_date: l.nextActionDate }),
     ...(l.imageUrl !== undefined && { image_url: l.imageUrl ?? null }),
+    ...(l.imageUrls !== undefined && { image_urls: l.imageUrls ?? null }),
+    ...(l.uploadSessionId !== undefined && { upload_session_id: l.uploadSessionId ?? null }),
   };
 }
 

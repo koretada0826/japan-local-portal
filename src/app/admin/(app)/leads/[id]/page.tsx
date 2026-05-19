@@ -118,26 +118,45 @@ export default async function AdminLeadDetailPage(props: { params: Params }) {
             </pre>
           </Card>
 
-          {lead.imageUrl && (
-            <Card title="アップロード画像">
+          {(lead.imageUrls?.length || lead.imageUrl) && (
+            <Card title={`アップロード画像（${lead.imageUrls?.length ?? (lead.imageUrl ? 1 : 0)}枚）`}>
               <div className="md:col-span-2">
-                <a
-                  href={lead.imageUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block rounded-xl overflow-hidden border border-border bg-surface-soft max-w-md hover:border-brand transition-colors"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={lead.imageUrl}
-                    alt={`${lead.companyName} のアップロード画像`}
-                    className="w-full h-auto"
-                    loading="lazy"
-                  />
-                </a>
-                <p className="mt-2 text-xs text-muted-soft break-all">
-                  {lead.imageUrl}
-                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {(lead.imageUrls?.length
+                    ? lead.imageUrls
+                    : lead.imageUrl
+                      ? [lead.imageUrl]
+                      : []
+                  ).map((u, i) => (
+                    <a
+                      key={u}
+                      href={u}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`relative block rounded-xl overflow-hidden border-2 bg-surface-soft hover:border-brand transition-colors ${
+                        i === 0 ? "border-brand" : "border-border"
+                      }`}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={u}
+                        alt={`${lead.companyName} #${i + 1}`}
+                        className="w-full aspect-square object-cover"
+                        loading="lazy"
+                      />
+                      {i === 0 && (
+                        <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold bg-brand text-white">
+                          メイン
+                        </span>
+                      )}
+                    </a>
+                  ))}
+                </div>
+                {lead.uploadSessionId && (
+                  <p className="mt-3 text-[11px] text-muted-soft break-all">
+                    Storage フォルダ: <code>lead-uploads/{lead.uploadSessionId}/</code>
+                  </p>
+                )}
               </div>
             </Card>
           )}
