@@ -162,14 +162,18 @@ export function FreeListingForm() {
             className="input"
           />
         </Field>
-        <Field label="お店の写真（ドラッグ&ドロップ or クリックで選択）">
+        <Field label="お店の写真（メイン画像 1枚）">
           <ImageUpload
             name="imageUrl"
             onChange={(url) => setValue("imageUrl", url, { shouldValidate: true })}
           />
-          <p className="mt-1 text-[11px] text-muted-soft">
-            ※ JPG / PNG / WebP・最大5MB。あとから差し替えも可能です。
-          </p>
+          <ul className="mt-2 text-[11px] text-muted-soft space-y-0.5 leading-relaxed">
+            <li>・アップロードできる画像: <strong className="text-foreground">1枚のみ</strong>（店舗ページのメイン画像になります）</li>
+            <li>・形式: JPG / PNG / WebP</li>
+            <li>・サイズ: <strong className="text-foreground">最大 5MB</strong></li>
+            <li>・推奨アスペクト比: <strong className="text-foreground">16:10</strong>（例：1600×1000px）</li>
+            <li>・あとから差し替え・追加写真の掲載は弊社にご相談ください</li>
+          </ul>
         </Field>
         <Field label="営業時間">
           <input
