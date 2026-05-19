@@ -117,6 +117,30 @@ export default async function AdminLeadDetailPage(props: { params: Params }) {
               {lead.needs ?? "—"}
             </pre>
           </Card>
+
+          {lead.imageUrl && (
+            <Card title="アップロード画像">
+              <div className="md:col-span-2">
+                <a
+                  href={lead.imageUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block rounded-xl overflow-hidden border border-border bg-surface-soft max-w-md hover:border-brand transition-colors"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={lead.imageUrl}
+                    alt={`${lead.companyName} のアップロード画像`}
+                    className="w-full h-auto"
+                    loading="lazy"
+                  />
+                </a>
+                <p className="mt-2 text-xs text-muted-soft break-all">
+                  {lead.imageUrl}
+                </p>
+              </div>
+            </Card>
+          )}
         </div>
 
         <aside>

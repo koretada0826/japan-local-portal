@@ -29,6 +29,7 @@ type LeadRow = {
   sales_status: Lead["salesStatus"];
   memo: string | null;
   next_action_date: string | null;
+  image_url: string | null;
   created_at: string;
 };
 
@@ -53,6 +54,7 @@ function rowToLead(r: LeadRow): Lead {
     salesStatus: r.sales_status,
     memo: r.memo ?? undefined,
     nextActionDate: r.next_action_date ?? undefined,
+    imageUrl: r.image_url ?? undefined,
     createdAt: r.created_at,
   };
 }
@@ -77,6 +79,7 @@ function leadToRow(l: Partial<Lead>): Partial<LeadRow> {
     ...(l.salesStatus !== undefined && { sales_status: l.salesStatus }),
     ...(l.memo !== undefined && { memo: l.memo }),
     ...(l.nextActionDate !== undefined && { next_action_date: l.nextActionDate }),
+    ...(l.imageUrl !== undefined && { image_url: l.imageUrl ?? null }),
   };
 }
 

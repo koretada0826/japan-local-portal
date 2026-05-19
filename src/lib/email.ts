@@ -67,6 +67,17 @@ export async function notifyLeadReceived(lead: Lead): Promise<void> {
         : ""
     }
 
+    ${
+      lead.imageUrl
+        ? `<div style="margin-top:16px;">
+          <div style="font-size:12px;color:#6b7280;margin-bottom:6px;">アップロード画像</div>
+          <a href="${escape(lead.imageUrl)}" target="_blank" style="display:block;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;text-decoration:none;">
+            <img src="${escape(lead.imageUrl)}" alt="${escape(lead.companyName)}" style="display:block;width:100%;max-width:400px;height:auto;" />
+          </a>
+        </div>`
+        : ""
+    }
+
     <div style="margin-top:32px;padding-top:24px;border-top:1px solid #e5e7eb;text-align:center;">
       <a href="${SITE_URL}/admin/leads/${lead.id}" style="display:inline-block;background:#ff6b35;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;">管理画面で詳細を見る</a>
     </div>

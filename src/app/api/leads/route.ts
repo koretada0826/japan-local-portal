@@ -108,6 +108,7 @@ export async function POST(request: Request) {
       interestedServices: d.wantsDiagnosis
         ? Array.from(new Set([...(d.interestedServices ?? []), "diagnosis"]))
         : d.interestedServices ?? [],
+      imageUrl: d.imageUrl || undefined,
     });
     return NextResponse.json({ ok: true, leadId: lead.id });
   }

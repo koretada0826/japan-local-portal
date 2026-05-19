@@ -98,6 +98,7 @@ export type Lead = {
   email: string;
   phone: string;
   needs?: string;
+  imageUrl?: string;
   hasWebsite?: boolean;
   hasGoogleBusinessProfile?: boolean;
   usesSns?: boolean;

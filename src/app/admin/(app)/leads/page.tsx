@@ -78,6 +78,7 @@ export default async function AdminLeadsPage(props: {
         <table className="min-w-full text-sm">
           <thead className="bg-surface-soft text-xs uppercase text-muted">
             <tr>
+              <th className="text-left px-4 py-3">画像</th>
               <th className="text-left px-4 py-3">日時</th>
               <th className="text-left px-4 py-3">企業/店舗名</th>
               <th className="text-left px-4 py-3">担当者</th>
@@ -91,6 +92,21 @@ export default async function AdminLeadsPage(props: {
           <tbody className="divide-y divide-border">
             {filtered.map((l) => (
               <tr key={l.id} className="hover:bg-surface-soft">
+                <td className="px-4 py-3">
+                  {l.imageUrl ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={l.imageUrl}
+                      alt={l.companyName}
+                      className="w-12 h-12 rounded-lg object-cover border border-border"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-lg bg-surface-soft border border-border flex items-center justify-center text-[10px] text-muted-soft">
+                      画像なし
+                    </div>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-xs text-muted whitespace-nowrap">
                   {new Date(l.createdAt).toLocaleString("ja-JP")}
                 </td>
@@ -144,7 +160,7 @@ export default async function AdminLeadsPage(props: {
             {filtered.length === 0 && (
               <tr>
                 <td
-                  colSpan={8}
+                  colSpan={9}
                   className="px-4 py-12 text-center text-muted-soft text-sm"
                 >
                   リードはまだありません
