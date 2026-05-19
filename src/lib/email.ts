@@ -16,7 +16,7 @@ const FROM = process.env.NOTIFY_EMAIL_FROM ?? "onboarding@resend.dev";
 
 const SITE_NAME = "まちセレクト";
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://japan-local-portal.onrender.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://machi-select.com";
 
 const leadTypeLabels: Record<Lead["leadType"], string> = {
   free_listing_application: "無料掲載のお申込み",
